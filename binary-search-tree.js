@@ -38,9 +38,25 @@ function buildTree(array, start = 0, end = array.length -1) {
 
 }
 
+// prettyPrint function
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+    if (node === null) {
+      return;
+    }
+    if (node.rightChild !== null) {
+      prettyPrint(node.rightChild, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    if (node.leftChild !== null) {
+      prettyPrint(node.leftChild, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
+  };
+
 // TESTING AREA
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 console.log("test array is:", testArray);
 
 let testTree = createTree(testArray);
 console.log("testTree:", testTree);
+
+console.log(prettyPrint(testTree));
