@@ -38,6 +38,24 @@ function buildTree(array, start = 0, end = array.length -1) {
 
 }
 
+// insert new node function
+// takes 2 params:
+// - value: The value to be inserted into the tree
+// - node: The current node to compare with (defaults to 'root' for the initial call)
+function insert(value, node = root) {
+    // if the current node is null (i.e., empty tree or leaf reached), create & return a new node to be linked by the parent
+    if (node === null) return createNode(value);
+    // if value is less than the current node's data, recursively insert in the left subtree
+    if (value < node.data) {
+        node.leftChild = insert(value, node.leftChild);
+    // If value is greater, recursively insert in the right subtree
+    } else if (value > node.data) {
+        node.rightChild = insert(value, node.rightChild);
+    }
+    // return the node after potentially updating its children, ensuring the tree structure is maintained during recursion
+    return node;
+}
+
 // prettyPrint function
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
@@ -60,3 +78,9 @@ let testTree = createTree(testArray);
 console.log("testTree:", testTree);
 
 console.log(prettyPrint(testTree));
+
+// Test inserting a new node into the tree
+testTreeInsert = insert(15, testTree);
+
+// Print the updated tree structure
+prettyPrint(testTreeInsert);
