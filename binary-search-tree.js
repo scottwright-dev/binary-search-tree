@@ -15,7 +15,6 @@ function createTree(array) {
     // Filter out duplicates using the Set method, convert into a new array using spread operator
     // then call sort on the array to sort in ascending order
     const sortedArray = [...new Set(array)].sort((a,b) => a - b);
-    console.log("sorted array:", sortedArray);
     // call buildTree to construct the tree from the sorted array and return the root node.
     // buildTree recursively divides array and creates a node from the middle element
     const root = buildTree(sortedArray);
@@ -108,6 +107,21 @@ function findMinNode(node) {
     return current; // This is leftmost node with min value in subtree
 }
 
+// findValue function - searches for a specific value in the tree
+function findValue(searchValue, node) {
+    // base case: if the node is null, value is not found in the tree
+    if (node === null) return null;
+    // if the searchValue is less than the current node's data, the searchValue is in the left subtree (if it exists)
+    if (searchValue < node.data) {
+        return findValue(searchValue, node.leftChild);
+     //  if the searchValue is greater than the current node's data, the target must be in the right subtree 
+    } else if (searchValue > node.data) {
+        return findValue(searchValue, node.rightChild);
+    }
+    // If the current node's data matches the search value, return it, as it represents the search value in the tree
+    return node;
+}
+
 // prettyPrint function
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
@@ -135,9 +149,16 @@ let testTree = createTree(testArray);
 // prettyPrint(testTreeInsert);
 
 // Test deleting a node
-console.log("Original tree:");
+// console.log("Original tree:");
 prettyPrint(testTree); // Print the original tree
 
-let testTreeDel = deleteNode(67, testTree); // Delete a node from the tree
-console.log("Tree after deleting node 67:");
-prettyPrint(testTree); // Print the tree after deletion
+// let testTreeDel = deleteNode(67, testTree); // Delete a node from the tree
+// console.log("Tree after deleting node 67:");
+// prettyPrint(testTree); // Print the tree after deletion
+
+//Testing findValue
+console.log('Find value that exists');
+console.log(findValue(324, testTree));
+
+console.log('Find value that does not exist');
+console.log(findValue(99999, testTree)); 
