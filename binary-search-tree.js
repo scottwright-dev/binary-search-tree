@@ -15,6 +15,7 @@ function createTree(array) {
     // Filter out duplicates using the Set method, convert into a new array using spread operator
     // then call sort on the array to sort in ascending order
     const sortedArray = [...new Set(array)].sort((a,b) => a - b);
+    console.log("sorted array:", sortedArray);
     // call buildTree to construct the tree from the sorted array and return the root node.
     // buildTree recursively divides array and creates a node from the middle element
     const root = buildTree(sortedArray);
@@ -42,7 +43,7 @@ function buildTree(array, start = 0, end = array.length -1) {
 // takes 2 params:
 // - value: The value to be inserted into the tree
 // - node: The current node to compare with (defaults to 'root' for the initial call)
-function insert(value, node = root) {
+function insertNode(value, node = root) {
     // if the current node is null (i.e., empty tree or leaf reached), create & return a new node to be linked by the parent
     if (node === null) return createNode(value);
     // if value is less than the current node's data, recursively insert in the left subtree
@@ -54,6 +55,57 @@ function insert(value, node = root) {
     }
     // return the node after potentially updating its children, ensuring the tree structure is maintained during recursion
     return node;
+}
+
+// Delete node function
+// takes 2 params:
+// - value: The value to be deleted from the tree
+// - node: The current node to compare with
+function deleteNode(value, node) {
+    // base case: if the current node is null, value is not found
+    if (node === null) return null;
+    // if value is less than the current number, go to the left to find it
+    if (value < node.data) {
+        node.leftChild = deleteNode(value, node.leftChild);
+    // else, if the value is more than the current number, go right to find it
+    } else if (value > node.data) {
+        node.rightChild = deleteNode(value, node.rightChild);
+    } else {
+        // Case 1: Node with no children
+        if (node.leftChild === null && node.rightChild === null) {
+            return null;
+        }
+        // Case 2: Node with only one child
+        if (node.leftChild === null) {
+            return node.rightChild; // Only right child exists, return it to replace the current node
+        }
+        if (node.rightChild === null) {
+            console.log('rh-node', node.leftChild);
+            return node.leftChild; // Only left child exists, return it to replace the current node
+        }
+        // Case 3: Node with two children
+        else {
+             // Find the smallest node in the right subtree
+            const smallestNode = findMinNode(node.rightChild);
+            // Replace node.data with the smallest node's data
+            node.data = smallestNode.data;
+            // Then delete the smallest node using deleteNode function
+            node.rightChild = deleteNode(smallestNode.data, node.rightChild);
+        }
+    }
+    // return the node after potentially updating its children
+    return node;
+}
+
+// Helper function for deleteNode which finds min node in right subtree
+function findMinNode(node) {
+    // variable to track node position
+    let current = node;
+    // traverse to leftmost node, leftmost node will have the smallest value
+    while (current && current.leftChild !== null) {
+        current = current.leftChild;
+    }
+    return current; // This is leftmost node with min value in subtree
 }
 
 // prettyPrint function
@@ -75,12 +127,17 @@ const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 console.log("test array is:", testArray);
 
 let testTree = createTree(testArray);
-console.log("testTree:", testTree);
 
-console.log(prettyPrint(testTree));
+// console.log(prettyPrint(testTree));
 
 // Test inserting a new node into the tree
-testTreeInsert = insert(15, testTree);
+// testTreeInsert = insert(15, testTree);
+// prettyPrint(testTreeInsert);
 
-// Print the updated tree structure
-prettyPrint(testTreeInsert);
+// Test deleting a node
+console.log("Original tree:");
+prettyPrint(testTree); // Print the original tree
+
+let testTreeDel = deleteNode(67, testTree); // Delete a node from the tree
+console.log("Tree after deleting node 67:");
+prettyPrint(testTree); // Print the tree after deletion
