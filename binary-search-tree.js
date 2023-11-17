@@ -122,6 +122,38 @@ function findValue(searchValue, node) {
     return node;
 }
 
+// Breadth-first traversal: visit nodes level by level
+// Parameters:
+// - root: The root element from which to start the traversal
+// - callback (optional): An optional callback function to apply to each visited node
+function levelOrder(root, callback = null) {
+    // If root node is null (indicating an empty tree), return an empty array
+    if (root === null) return [];
+    // Initialize a queue with root node to keep track of nodes to visit
+    const queue = [root];
+    // Initialize an empty array to store traversal result
+    const result = [];
+    // while queue has something in it...
+    while (queue.length) {
+        const currentNode = queue.shift(); // Dequeue the current node
+        if (callback) {
+            callback(currentNode.data); // If a callback is present, perform the callback function on the data
+        } else {
+            result.push(currentNode.data); // push the data from the node into results
+        }
+        // Enqueue child nodes if they exist, this adds any child nodes to the queue for processing
+        if (currentNode.leftChild) {
+            queue.push(currentNode.leftChild);
+        }
+        if (currentNode.rightChild) {
+            queue.push(currentNode.rightChild);
+        }
+    }
+    // return the final traversal result
+    return result;
+}
+
+
 // prettyPrint function
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
@@ -142,7 +174,7 @@ console.log("test array is:", testArray);
 
 let testTree = createTree(testArray);
 
-// console.log(prettyPrint(testTree));
+console.log(prettyPrint(testTree));
 
 // Test inserting a new node into the tree
 // testTreeInsert = insert(15, testTree);
@@ -157,8 +189,11 @@ prettyPrint(testTree); // Print the original tree
 // prettyPrint(testTree); // Print the tree after deletion
 
 //Testing findValue
-console.log('Find value that exists');
-console.log(findValue(324, testTree));
+// console.log('Find value that exists');
+// console.log(findValue(324, testTree));
 
-console.log('Find value that does not exist');
-console.log(findValue(99999, testTree)); 
+// console.log('Find value that does not exist');
+// console.log(findValue(99999, testTree)); 
+
+// Testing levelOrder
+console.log('level order traversal', levelOrder(testTree)); // should output [8, 4, 67, 1, 5, 9, 324, 3, 7, 23, 6345]
