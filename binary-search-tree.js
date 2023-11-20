@@ -234,6 +234,25 @@ function preOrder(root, callback = null) {
     return result; // return the result containing the nodes in preOrder
 }
 
+// find total height of test tree
+function getTreeHeight(node) {
+    // base case: If the node is null, return 0 (height of an empty tree)
+    if (node === null) {
+        return 0;
+    }
+    // Recursive case: calculate height of the left and right subtrees
+    const leftHeight = getTreeHeight(node.leftChild);
+    const rightHeight = getTreeHeight(node.rightChild);
+
+    // compare the heights and return the greater height, plus 1 for the current node (counting levels)
+    if (leftHeight > rightHeight) {
+        return leftHeight + 1;
+    } else {
+        return rightHeight + 1;
+    }
+}
+
+
 
 // prettyPrint function
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -286,3 +305,6 @@ console.log('postOrder (depth first) traversal', postOrder(testTree)); // should
 
 // Testing preOrder traversal
 console.log('preOrder (depth first) traversal', preOrder(testTree)); // should output [8, 4, 1, 3, 5, 7, 67, 9, 23, 324, 6345]
+
+// Testing getTreeHeight
+console.log('Tree height is:', getTreeHeight(testTree)); // should return 4
