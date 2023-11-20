@@ -153,6 +153,33 @@ function levelOrder(root, callback = null) {
     return result;
 }
 
+// Depth first traversal: recursively visit leftmost node first, then the current node, and then the right subtree
+// Parameters:
+// - root: The root element from which to start the traversal
+// - callback (optional): An optional callback function to apply to each visited node
+function inOrder(root, callback = null) {
+    // If the root node is null (indicating an empty tree), return an empty array
+    if (root === null) return [];
+    
+    // initialize an empty array to store traversal result
+    let result = [];
+    
+    // traverse the left subtree first
+    result.push(...inOrder(root.leftChild, callback));
+
+    // visit current node
+    if (callback) {
+        callback(root.data); // apply callback to current node's data if provided
+    } else {
+        result.push(root.data); // push current node's data to the result array if no callback is provided
+    }
+
+    // Traverse the right subtree
+    result.push(...inOrder(root.rightChild, callback));
+
+    return result; // return result containing the nodes in ascending order
+}
+
 
 // prettyPrint function
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -173,7 +200,6 @@ const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 console.log("test array is:", testArray);
 
 let testTree = createTree(testArray);
-
 console.log(prettyPrint(testTree));
 
 // Test inserting a new node into the tree
@@ -182,7 +208,7 @@ console.log(prettyPrint(testTree));
 
 // Test deleting a node
 // console.log("Original tree:");
-prettyPrint(testTree); // Print the original tree
+// prettyPrint(testTree); // Print the original tree
 
 // let testTreeDel = deleteNode(67, testTree); // Delete a node from the tree
 // console.log("Tree after deleting node 67:");
@@ -197,3 +223,6 @@ prettyPrint(testTree); // Print the original tree
 
 // Testing levelOrder
 console.log('level order traversal', levelOrder(testTree)); // should output [8, 4, 67, 1, 5, 9, 324, 3, 7, 23, 6345]
+
+// Testing inOrder traversal
+console.log('inOrder (depth first) traversal', inOrder(testTree)); // should output [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
