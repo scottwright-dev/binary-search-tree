@@ -180,6 +180,33 @@ function inOrder(root, callback = null) {
     return result; // return result containing the nodes in ascending order
 }
 
+// Depth first, "postOrder" traversal: start from the leftmost child, then visit the right subtree, and finally visit the current node
+// Parameters:
+// - root: The root element from which to start the traversal
+// - callback (optional): An optional callback function to apply to each visited node
+function postOrder(root, callback = null) {
+    // If the root node is null (indicating an empty tree), return an empty array
+    if (root === null) return [];
+    
+    // initialize an empty array to store traversal result
+    let result = [];
+    
+    // traverse the left subtree first
+    result.push(...postOrder(root.leftChild, callback));
+
+    // traverse the right subtree
+    result.push(...postOrder(root.rightChild, callback));
+
+    // visit current node
+    if (callback) {
+        callback(root.data); // apply callback to the current node's data if provided
+    } else {
+        result.push(root.data); // push the current node's data to the result array if no callback is provided
+    }
+
+    return result; // return the result containing the nodes in postOrder
+}
+
 
 // prettyPrint function
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -222,7 +249,10 @@ console.log(prettyPrint(testTree));
 // console.log(findValue(99999, testTree)); 
 
 // Testing levelOrder
-console.log('level order traversal', levelOrder(testTree)); // should output [8, 4, 67, 1, 5, 9, 324, 3, 7, 23, 6345]
+// console.log('level order traversal', levelOrder(testTree)); // should output [8, 4, 67, 1, 5, 9, 324, 3, 7, 23, 6345]
 
 // Testing inOrder traversal
 console.log('inOrder (depth first) traversal', inOrder(testTree)); // should output [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
+
+// Testing postOrder traversal
+console.log('postOrder (depth first) traversal', postOrder(testTree)); // should output [3, 1, 7, 5, 4, 23, 9, 6345, 324, 67, 8]
