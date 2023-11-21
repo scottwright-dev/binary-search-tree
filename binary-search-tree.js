@@ -252,6 +252,27 @@ function getTreeHeight(node) {
     }
 }
 
+// find depth of a node in the tree: The depth of a node is the number of edges from the node to the tree's root node
+// 3 parameters:  
+// rootNode - root node of the tree
+// targetValue - the value of the node whose depth we want to find
+// currentDepth - The current depth from the root node, starts at 0
+function getNodeDepth(rootNode, targetValue, currentDepth = 0) {
+    if (rootNode === null) return -1; // node not found
+    if (rootNode.data === targetValue) return currentDepth; // If the current node is the target, return the current depth
+
+    // search in the left subtree, increasing the depth recursively
+    const leftSubTree = getNodeDepth(rootNode.leftChild, targetValue, currentDepth + 1);
+    // if node is found in the left subtree, return its depth
+    if (leftSubTree !== -1) return leftSubTree; // node found in left subtree
+
+    // search in the right subtree, increasing the depth recursively
+    const rightSubTree = getNodeDepth(rootNode.rightChild, targetValue, currentDepth + 1);
+        // if node is found in the right subtree, return its depth
+    if (rightSubTree !== -1) return rightSubTree; // node found in right subtree
+
+    return -1; // node not found in either subtree
+}
 
 
 // prettyPrint function
@@ -308,3 +329,10 @@ console.log('preOrder (depth first) traversal', preOrder(testTree)); // should o
 
 // Testing getTreeHeight
 console.log('Tree height is:', getTreeHeight(testTree)); // should return 4
+
+// Testing getNodeDepth
+console.log('Root node depth is:', getNodeDepth(testTree, testTree.data)); // should return 0, root is always 0
+console.log('Depth of node with value 23:', getNodeDepth(testTree, 23));// should be 3
+console.log('Depth of node with value 67:', getNodeDepth(testTree, 67));// should be 1
+console.log('Depth of node with value 6677:', getNodeDepth(testTree, 6677));// should be -1 to indicate value not present
+
