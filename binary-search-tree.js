@@ -42,15 +42,15 @@ function buildTree(array, start = 0, end = array.length -1) {
 // takes 2 params:
 // - value: The value to be inserted into the tree
 // - node: The current node to compare with (defaults to 'root' for the initial call)
-function insertNode(value, node = root) {
+function insertNode(value, node) {
     // if the current node is null (i.e., empty tree or leaf reached), create & return a new node to be linked by the parent
     if (node === null) return createNode(value);
     // if value is less than the current node's data, recursively insert in the left subtree
     if (value < node.data) {
-        node.leftChild = insert(value, node.leftChild);
+        node.leftChild = insertNode(value, node.leftChild);
     // If value is greater, recursively insert in the right subtree
     } else if (value > node.data) {
-        node.rightChild = insert(value, node.rightChild);
+        node.rightChild = insertNode(value, node.rightChild);
     }
     // return the node after potentially updating its children, ensuring the tree structure is maintained during recursion
     return node;
@@ -318,11 +318,11 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   };
 
 // TESTING AREA
-const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-console.log("test array is:", testArray);
+// const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// console.log("test array is:", testArray);
 
-let testTree = createTree(testArray);
-console.log(prettyPrint(testTree));
+// let testTree = createTree(testArray);
+// console.log(prettyPrint(testTree));
 
 // Test inserting a new node into the tree
 // testTreeInsert = insert(15, testTree);
@@ -347,36 +347,36 @@ console.log(prettyPrint(testTree));
 // console.log('level order traversal', levelOrder(testTree)); // should output [8, 4, 67, 1, 5, 9, 324, 3, 7, 23, 6345]
 
 // Testing inOrder traversal
-console.log('inOrder (depth first) traversal', inOrder(testTree)); // should output [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
+// console.log('inOrder (depth first) traversal', inOrder(testTree)); // should output [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
 
 // Testing postOrder traversal
-console.log('postOrder (depth first) traversal', postOrder(testTree)); // should output [3, 1, 7, 5, 4, 23, 9, 6345, 324, 67, 8]
+// console.log('postOrder (depth first) traversal', postOrder(testTree)); // should output [3, 1, 7, 5, 4, 23, 9, 6345, 324, 67, 8]
 
 // Testing preOrder traversal
-console.log('preOrder (depth first) traversal', preOrder(testTree)); // should output [8, 4, 1, 3, 5, 7, 67, 9, 23, 324, 6345]
+// console.log('preOrder (depth first) traversal', preOrder(testTree)); // should output [8, 4, 1, 3, 5, 7, 67, 9, 23, 324, 6345]
 
 // Testing getTreeHeight
-console.log('Tree height is:', getTreeHeight(testTree)); // should return 4
+// console.log('Tree height is:', getTreeHeight(testTree)); // should return 4
 
 // Testing getNodeDepth
-console.log('Root node depth is:', getNodeDepth(testTree, testTree.data)); // should return 0, root is always 0
-console.log('Depth of node with value 23:', getNodeDepth(testTree, 23));// should be 3
-console.log('Depth of node with value 67:', getNodeDepth(testTree, 67));// should be 1
-console.log('Depth of node with value 6677:', getNodeDepth(testTree, 6677));// should be -1 to indicate value not present
+// console.log('Root node depth is:', getNodeDepth(testTree, testTree.data)); // should return 0, root is always 0
+// console.log('Depth of node with value 23:', getNodeDepth(testTree, 23));// should be 3
+// console.log('Depth of node with value 67:', getNodeDepth(testTree, 67));// should be 1
+// console.log('Depth of node with value 6677:', getNodeDepth(testTree, 6677));// should be -1 to indicate value not present
 
 // Testing isBalanced
-console.log('is the tree balanced?', isBalanced(testTree)); // true
+// console.log('is the tree balanced?', isBalanced(testTree)); // true
 
 // test an unbalanced tree
-let unbalancedTree = createNode(1);
-unbalancedTree.rightChild = createNode(2); // Adding a right child
-unbalancedTree.rightChild.rightChild = createNode(3); // Adding a right child to the right child
+// let unbalancedTree = createNode(1);
+// unbalancedTree.rightChild = createNode(2); // Adding a right child
+//unbalancedTree.rightChild.rightChild = createNode(3); // Adding a right child to the right child
 
 // Testing if the imbalanced tree is balanced
-console.log('Is the tree balanced?', isBalanced(unbalancedTree)); //false
+// console.log('Is the tree balanced?', isBalanced(unbalancedTree)); //false
 
 // Testing the rebalance function
-console.log('is the unbalanced tree balanced?', isBalanced(unbalancedTree)); // false
-const rebalancedTree = rebalance(unbalancedTree);
-console.log('is the rebalanced tree balanced?', isBalanced(rebalancedTree)); // should be true
+// console.log('is the unbalanced tree balanced?', isBalanced(unbalancedTree)); // false
+// const rebalancedTree = rebalance(unbalancedTree);
+// console.log('is the rebalanced tree balanced?', isBalanced(rebalancedTree)); // should be true
 
