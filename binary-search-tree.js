@@ -294,6 +294,14 @@ function isBalanced(node) {
 
 }
 
+// rebalance an unbalanced tree
+function rebalance(root) {
+    // Step 1: Traverse the tree using the inOrder to collect the elements in a sorted order
+    const sortedElements = inOrder(root);
+
+    // Step 2: Rebuild the tree using the sorted elements
+    return buildTree(sortedElements);
+}
 
 // prettyPrint function
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -366,3 +374,9 @@ unbalancedTree.rightChild.rightChild = createNode(3); // Adding a right child to
 
 // Testing if the imbalanced tree is balanced
 console.log('Is the tree balanced?', isBalanced(unbalancedTree)); //false
+
+// Testing the rebalance function
+console.log('is the unbalanced tree balanced?', isBalanced(unbalancedTree)); // false
+const rebalancedTree = rebalance(unbalancedTree);
+console.log('is the rebalanced tree balanced?', isBalanced(rebalancedTree)); // should be true
+
