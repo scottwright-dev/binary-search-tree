@@ -1,7 +1,5 @@
 # binary-search-tree
 
-# Currently work in progress
-
 My solution to the [Binary Search Tree Assignment](https://www.theodinproject.com/lessons/javascript-binary-search-trees) from the Odin Project curriculum.
 
 ## Assignment
