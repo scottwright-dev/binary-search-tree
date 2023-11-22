@@ -274,6 +274,26 @@ function getNodeDepth(rootNode, targetValue, currentDepth = 0) {
     return -1; // node not found in either subtree
 }
 
+// isBalanced: A balanced tree is one where the difference between heights of the left subtree and the right subtree of every node is not more than 1
+function isBalanced(node) {
+    // base case, a null tree is balanced
+    if (node === null) return true;
+
+    // get heights of right & left subtrees
+    const leftSubTreeHeight = getTreeHeight(node.leftChild);
+    const rightSubTreeHeight = getTreeHeight(node.rightChild);
+
+      // check if the current node is balanced
+      const heightDifference =  leftSubTreeHeight - rightSubTreeHeight;
+      // check if the current node is balanced - diff in height should not exceed 1
+      // The tree is balanced if the height difference is between -1 and 1, inclusive
+      const isCurrentNodeBalanced = (heightDifference <= 1) && (heightDifference >= -1);
+
+    // Recursively check if the left and right subtrees are also balanced
+    return isCurrentNodeBalanced && isBalanced(node.leftChild) && isBalanced(node.rightChild); 
+
+}
+
 
 // prettyPrint function
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -336,3 +356,13 @@ console.log('Depth of node with value 23:', getNodeDepth(testTree, 23));// shoul
 console.log('Depth of node with value 67:', getNodeDepth(testTree, 67));// should be 1
 console.log('Depth of node with value 6677:', getNodeDepth(testTree, 6677));// should be -1 to indicate value not present
 
+// Testing isBalanced
+console.log('is the tree balanced?', isBalanced(testTree)); // true
+
+// test an unbalanced tree
+let unbalancedTree = createNode(1);
+unbalancedTree.rightChild = createNode(2); // Adding a right child
+unbalancedTree.rightChild.rightChild = createNode(3); // Adding a right child to the right child
+
+// Testing if the imbalanced tree is balanced
+console.log('Is the tree balanced?', isBalanced(unbalancedTree)); //false
